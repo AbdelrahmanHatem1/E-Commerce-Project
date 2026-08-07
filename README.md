@@ -2,9 +2,10 @@
 
 A React storefront with a full admin panel and a visual **Site Builder** — drag-and-drop page composition, seasonal themes, and scheduled layouts, all running client-side against a public demo API.
 
-![tests](https://img.shields.io/badge/tests-362%20passing-brightgreen)
 ![react](https://img.shields.io/badge/React-19-61dafb)
 ![vite](https://img.shields.io/badge/Vite-blueviolet)
+
+**[Live demo →](https://e-commerce-project-abdelrahmanhatem1.vercel.app)**
 
 ---
 
@@ -51,7 +52,6 @@ Then visit `/admin`.
 | Build | Vite |
 | UI | React-Bootstrap · Bootstrap Icons · React Icons |
 | HTTP | Axios |
-| Tests | Vitest · Testing Library · fake-indexeddb |
 | Data | [DummyJSON](https://dummyjson.com) · [open.er-api.com](https://open.er-api.com) for FX rates |
 
 <sub>Exact versions are pinned in `package.json`.</sub>
@@ -215,25 +215,17 @@ DummyJSON accepts `POST`, `PUT` and `DELETE` and returns a success response, but
 
 ---
 
-## Tests
+## Engineering notes
 
-```bash
-npx vitest run          # once
-npx vitest              # watch
-```
+The project was built alongside a suite of regression tests, each written against a bug that actually shipped and each verified to fail when its fix is reverted. The tests are not in this repository, but the fixes and the reasoning behind them are — every non-obvious rule in the codebase carries a comment explaining what broke.
 
-**362 tests across 27 files.** They cover cart and wallet arithmetic, storefront rendering, the builder, the block renderer, theme cascade and timing, image migration, corrupt-storage recovery, and CSS hygiene.
+Bugs worth knowing about, because they are easy to reintroduce:
 
-Several are regression guards written against bugs that actually shipped, and each was verified to fail when its fix is reverted:
-
-- CSS class collisions with vendor namespaces (`.bi` is Bootstrap Icons' base class)
-- The `background` shorthand silently resetting `background-size` on an element with an image
-- Alignment rules matching `[style*='center']` when an unrelated property contained the word
-- A builder preview wiping the storefront's palette on unmount
-- `localStorage` writes that could throw on a full quota
-- Effects that add a timer or listener without clearing it
-
-Tests live in `tests/`. The setup expects `src/contexts/ThemeContext.jsx`, `src/index.css`, `src/App.css` and `src/components/Notification.css` to exist.
+- **Vendor class collisions.** `.bi` is Bootstrap Icons' base class; styling it repainted every icon in the app as a white box.
+- **The `background` shorthand.** It resets `background-size`, `-position` and `-repeat` even when it only names a colour. On an element carrying a photo that silently destroys the image sizing. The category tiles now use a real `<img>` child for exactly this reason.
+- **Attribute-substring selectors.** `[style*='center']` matched any element whose inline style merely *contained* the word — a `justify-content: center` from an unrelated control was enough. Alignment keys off a real class now.
+- **Effect cleanup order.** A preview that paints `<html>` and cleans up on unmount will wipe whatever the app painted there, and the app's own effect will not re-run to restore it.
+- **`localStorage` quota.** A write throws when the origin is full; unguarded, that takes a render down with it. Every write goes through `src/lib/storage.js`.
 
 ---
 
