@@ -1,0 +1,592 @@
+/* ================================================================
+   Privacy / Terms — scoped under .lg-* so nothing can leak.
+   ================================================================ */
+.lg-page {
+    box-sizing: border-box;
+    min-height: calc(100vh - 80px);
+    padding: clamp(1.25rem, 3.5vw, 2.5rem) clamp(0.85rem, 3vw, 2rem) clamp(3rem, 6vw, 5rem);
+    background: var(--ss-canvas, #f7f8fc);
+    color: #172033;
+}
+
+.lg-page *,
+.lg-page *::before,
+.lg-page *::after {
+    box-sizing: border-box;
+}
+
+body.dark .lg-page {
+    background: var(--ss-canvas, #0d1424);
+    color: #edf2ff;
+}
+
+.lg-shell {
+    width: min(100%, 1080px);
+    margin: 0 auto;
+}
+
+/* --------------------------- breadcrumb --------------------------- */
+.lg-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 1.1rem;
+    color: #8b95ab;
+    font-size: 0.78rem;
+}
+
+.lg-breadcrumb a {
+    color: var(--ss-accent, #4c1fd7);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.lg-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.lg-breadcrumb i {
+    font-size: 0.6rem;
+}
+
+body.dark .lg-breadcrumb {
+    color: #7b89a9;
+}
+
+body.dark .lg-breadcrumb a {
+    color: var(--ss-accent, #a78bfa);
+}
+
+/* ----------------------------- header ----------------------------- */
+.lg-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.1rem;
+    margin-bottom: 2rem;
+    padding: clamp(1.35rem, 3.5vw, 2rem);
+    border: 1px solid #e6e9f2;
+    border-radius: 16px;
+    background: var(--ss-surface, #ffffff);
+}
+
+body.dark .lg-header {
+    border-color: var(--ss-line, #232d47);
+    background: var(--ss-surface, #141c31);
+}
+
+.lg-header-icon {
+    display: grid;
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 14px;
+    background: #eeecff;
+    color: var(--ss-accent, #4c1fd7);
+    font-size: 1.4rem;
+}
+
+body.dark .lg-header-icon {
+    background: rgba(124, 58, 237, 0.2);
+    color: var(--ss-accent, #c4b5fd);
+}
+
+.lg-header h1 {
+    margin: 0 0 0.5rem;
+    color: #141c33;
+    font-size: clamp(1.4rem, 3.5vw, 2rem);
+    font-weight: 850;
+    letter-spacing: -0.03em;
+}
+
+body.dark .lg-header h1 {
+    color: #f4f7ff;
+}
+
+.lg-header p {
+    max-width: 620px;
+    margin: 0 0 0.75rem;
+    color: #667085;
+    font-size: 0.9rem;
+    line-height: 1.65;
+}
+
+body.dark .lg-header p {
+    color: #97a5c4;
+}
+
+.lg-updated {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: var(--ss-canvas, #eef1fb);
+    color: var(--ss-accent, #4c1fd7);
+    font-size: 0.73rem;
+    font-weight: 700;
+}
+
+body.dark .lg-updated {
+    background: rgba(124, 58, 237, 0.16);
+    color: var(--ss-accent, #a78bfa);
+}
+
+/* ----------------------------- layout ----------------------------- */
+.lg-layout {
+    display: grid;
+    align-items: start;
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+    grid-template-columns: 230px minmax(0, 1fr);
+}
+
+/* ------------------------------ toc ------------------------------- */
+.lg-toc {
+    position: sticky;
+    top: 96px;
+    padding: 1.25rem;
+    border: 1px solid #e6e9f2;
+    border-radius: 14px;
+    background: var(--ss-surface, #ffffff);
+}
+
+body.dark .lg-toc {
+    border-color: var(--ss-line, #232d47);
+    background: var(--ss-surface, #141c31);
+}
+
+.lg-toc h2 {
+    margin: 0 0 0.85rem;
+    color: #8b95ab;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.lg-toc nav {
+    display: grid;
+    gap: 0.1rem;
+}
+
+.lg-toc button {
+    padding: 0.5rem 0.65rem;
+    border: 0;
+    border-left: 2px solid transparent;
+    border-radius: 0 7px 7px 0;
+    background: transparent;
+    color: #667085;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.83rem;
+    font-weight: 600;
+    text-align: left;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.lg-toc button:hover {
+    background: var(--ss-canvas, #f4f6fb);
+    color: var(--ss-accent, #4c1fd7);
+}
+
+.lg-toc button.is-active {
+    border-left-color: var(--ss-accent, #4c1fd7);
+    background: #f4f2ff;
+    color: var(--ss-accent, #4c1fd7);
+    font-weight: 700;
+}
+
+body.dark .lg-toc button {
+    color: #97a5c4;
+}
+
+body.dark .lg-toc button:hover {
+    background: #1e2740;
+    color: var(--ss-accent, #a78bfa);
+}
+
+body.dark .lg-toc button.is-active {
+    border-left-color: var(--ss-accent, #7c3aed);
+    background: var(--ss-surface, #1b2440);
+    color: var(--ss-accent, #a78bfa);
+}
+
+.lg-toc-foot {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1.1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eef0f6;
+}
+
+body.dark .lg-toc-foot {
+    border-top-color: var(--ss-line, #232d47);
+}
+
+.lg-toc-foot a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ss-accent, #4c1fd7);
+    font-size: 0.81rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.lg-toc-foot a:hover {
+    text-decoration: underline;
+}
+
+body.dark .lg-toc-foot a {
+    color: var(--ss-accent, #a78bfa);
+}
+
+/* --------------------------- document ----------------------------- */
+.lg-doc {
+    padding: clamp(1.35rem, 3.5vw, 2.25rem);
+    border: 1px solid #e6e9f2;
+    border-radius: 16px;
+    background: var(--ss-surface, #ffffff);
+}
+
+body.dark .lg-doc {
+    border-color: var(--ss-line, #232d47);
+    background: var(--ss-surface, #141c31);
+}
+
+.lg-section {
+    padding-bottom: 1.75rem;
+    margin-bottom: 1.75rem;
+    border-bottom: 1px solid #f1f3f9;
+    scroll-margin-top: 96px;
+}
+
+.lg-section:last-of-type {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+
+body.dark .lg-section {
+    border-bottom-color: var(--ss-line, #1e2740);
+}
+
+.lg-section h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    margin: 0 0 0.85rem;
+    color: #141c33;
+    font-size: 1.15rem;
+    font-weight: 850;
+    letter-spacing: -0.02em;
+}
+
+body.dark .lg-section h2 {
+    color: #f4f7ff;
+}
+
+.lg-section-number {
+    color: #c2cadb;
+    font-size: 0.85rem;
+    font-weight: 850;
+    font-variant-numeric: tabular-nums;
+}
+
+body.dark .lg-section-number {
+    color: #3b4763;
+}
+
+.lg-section p {
+    margin: 0 0 0.85rem;
+    color: #4a5568;
+    font-size: 0.9rem;
+    line-height: 1.75;
+}
+
+.lg-section p:last-child {
+    margin-bottom: 0;
+}
+
+body.dark .lg-section p {
+    color: #c3cde6;
+}
+
+/* ---------------------------- doc foot ---------------------------- */
+.lg-doc-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1.35rem;
+    border-radius: 14px;
+    background: var(--ss-canvas, #f4f6fb);
+}
+
+body.dark .lg-doc-foot {
+    background: var(--ss-canvas, #0f1729);
+}
+
+.lg-doc-foot h3 {
+    margin: 0 0 0.2rem;
+    color: #141c33;
+    font-size: 0.98rem;
+    font-weight: 800;
+}
+
+body.dark .lg-doc-foot h3 {
+    color: #f4f7ff;
+}
+
+.lg-doc-foot p {
+    margin: 0;
+    color: #8b95ab;
+    font-size: 0.84rem;
+}
+
+.lg-doc-foot a {
+    flex-shrink: 0;
+    padding: 0.65rem 1.4rem;
+    border-radius: 10px;
+    background: var(--ss-accent, #4c1fd7);
+    color: #ffffff;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.lg-doc-foot a:hover {
+    background: var(--ss-accent, #3d18b0);
+    transform: translateY(-1px);
+}
+
+body.dark .lg-doc-foot a {
+    background: var(--ss-accent, #7c3aed);
+}
+
+/* --------------------------- responsive --------------------------- */
+@media (max-width: 900px) {
+    .lg-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .lg-toc {
+        position: static;
+    }
+
+    .lg-toc nav {
+        grid-auto-flow: column;
+        grid-auto-columns: max-content;
+        gap: 0.35rem;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+
+    .lg-toc nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .lg-toc button {
+        border-left: 0;
+        border-bottom: 2px solid transparent;
+        border-radius: 7px 7px 0 0;
+        white-space: nowrap;
+    }
+
+    .lg-toc button.is-active {
+        border-left: 0;
+        border-bottom-color: var(--ss-accent, #4c1fd7);
+    }
+
+    body.dark .lg-toc button.is-active {
+        border-bottom-color: var(--ss-accent, #7c3aed);
+    }
+
+    .lg-toc-foot {
+        grid-auto-flow: column;
+        justify-content: start;
+        gap: 1.25rem;
+    }
+}
+
+@media (max-width: 560px) {
+    .lg-header {
+        flex-direction: column;
+    }
+
+    .lg-doc-foot a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .lg-toc-foot {
+        grid-auto-flow: row;
+        gap: 0.6rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .lg-toc button,
+    .lg-doc-foot a {
+        transition: none !important;
+    }
+}
+
+/* ================================================================
+   Feature pass — progress bar, reading time, print, section links
+   ================================================================ */
+.lg-progress {
+    position: fixed;
+    z-index: 1300;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--ss-accent, #4c1fd7);
+    transform-origin: left;
+    transition: transform 0.1s linear;
+}
+
+body.dark .lg-progress {
+    background: var(--ss-accent, #a78bfa);
+}
+
+.lg-header-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.lg-reading {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: #eef0f6;
+    color: #64748b;
+    font-size: 0.73rem;
+    font-weight: 700;
+}
+
+body.dark .lg-reading {
+    background: #1e2740;
+    color: #97a5c4;
+}
+
+.lg-print {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 4px 12px;
+    border: 1px solid #e0e5f1;
+    border-radius: 999px;
+    background: transparent;
+    color: #667085;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.73rem;
+    font-weight: 700;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.lg-print:hover {
+    border-color: var(--ss-accent, #4c1fd7);
+    color: var(--ss-accent, #4c1fd7);
+}
+
+body.dark .lg-print {
+    border-color: var(--ss-line, #2b3550);
+    color: #97a5c4;
+}
+
+body.dark .lg-print:hover {
+    border-color: var(--ss-accent, #7c3aed);
+    color: var(--ss-accent, #a78bfa);
+}
+
+/* --------------------------- anchor link -------------------------- */
+.lg-anchor {
+    display: grid;
+    width: 26px;
+    height: 26px;
+    place-items: center;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: #c2cadb;
+    cursor: pointer;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: opacity 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.lg-section:hover .lg-anchor,
+.lg-anchor:focus-visible {
+    opacity: 1;
+}
+
+.lg-anchor:hover {
+    background: #f1f3fa;
+    color: var(--ss-accent, #4c1fd7);
+}
+
+body.dark .lg-anchor {
+    color: #3b4763;
+}
+
+body.dark .lg-anchor:hover {
+    background: #1e2740;
+    color: var(--ss-accent, #a78bfa);
+}
+
+/* Touch devices have no hover, so keep it visible. */
+@media (hover: none) {
+    .lg-anchor {
+        opacity: 1;
+    }
+}
+
+/* ------------------------------ print ----------------------------- */
+@media print {
+    .lg-page {
+        background: var(--ss-surface, #ffffff) !important;
+        color: #000000 !important;
+        padding: 0 !important;
+    }
+
+    .lg-progress,
+    .lg-breadcrumb,
+    .lg-toc,
+    .lg-doc-foot,
+    .lg-print,
+    .lg-anchor {
+        display: none !important;
+    }
+
+    .lg-layout {
+        grid-template-columns: 1fr !important;
+    }
+
+    .lg-header,
+    .lg-doc {
+        border: 0 !important;
+        background: var(--ss-surface, #ffffff) !important;
+        padding: 0 !important;
+    }
+
+    .lg-section {
+        break-inside: avoid;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lg-progress {
+        transition: none !important;
+    }
+}

@@ -1,0 +1,360 @@
+/* ================================================================
+   Footer
+   ================================================================ */
+.footer-section {
+  padding: 4rem 0 2rem;
+  border-top: 1px solid #e5e7eb;
+  background: var(--ss-surface, #ffffff);
+  color: #4b5563;
+}
+
+.footer-section.dark {
+  border-top-color: var(--ss-line, #374151);
+  background: var(--ss-surface, #111827);
+  color: #d1d5db;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand {
+  min-width: 250px;
+  flex: 1;
+}
+
+.footer-brand h3 {
+  margin-bottom: 1rem;
+  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.footer-section.dark .footer-brand h3 {
+  color: #ffffff;
+}
+
+.footer-brand p {
+  max-width: 390px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+/* ----------------------------------------------------------------
+   Icons from react-icons/bs.
+   They are SVG components, so no Bootstrap Icons CSS import is needed.
+   ---------------------------------------------------------------- */
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid #64748b;
+  border-radius: 50%;
+  background: transparent;
+  color: #475569;
+  text-decoration: none;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.social-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.8;
+}
+
+.social-icon i {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.social-icon:hover {
+  border-color: var(--ss-accent, #5800ff);
+  background: var(--ss-accent, #5800ff);
+  color: #ffffff;
+  transform: translateY(-3px);
+}
+
+.social-icon:focus-visible {
+  outline: 3px solid rgba(88, 0, 255, 0.35);
+  outline-offset: 3px;
+}
+
+.footer-section.dark .social-icon {
+  border-color: #94a3b8;
+  background: transparent;
+  color: #e2e8f0;
+}
+
+.footer-section.dark .social-icon:hover {
+  border-color: var(--ss-accent, #a78bfa);
+  background: var(--ss-accent, #7c3aed);
+  color: #ffffff;
+}
+
+.footer-links {
+  display: flex;
+  flex: 2;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footer-column {
+  min-width: 150px;
+  flex: 1;
+}
+
+.footer-column h4 {
+  margin-bottom: 1rem;
+  color: #1f2937;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.footer-section.dark .footer-column h4 {
+  color: #ffffff;
+}
+
+.footer-column ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-column li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-column a {
+  color: #6b7280;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.footer-section.dark .footer-column a {
+  color: #9ca3af;
+}
+
+.footer-column a:hover {
+  color: var(--ss-accent, #5800ff);
+}
+
+.footer-section.dark .footer-column a:hover {
+  color: var(--ss-accent, #c4b5fd);
+}
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.footer-section.dark .footer-bottom {
+  border-top-color: var(--ss-line, #374151);
+}
+
+.footer-bottom p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.footer-section.dark .footer-bottom p {
+  color: #9ca3af;
+}
+
+/* ----------------------------------------------------------------
+   Payment marks — inline SVG so they stay visible in both themes.
+   The old CDN <img> files were solid black and vanished on dark.
+   ---------------------------------------------------------------- */
+.payment-icons {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.payment-mark {
+  display: grid;
+  height: 26px;
+  place-items: center;
+  padding: 0 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  background: var(--ss-surface, #ffffff);
+  color: #1a1f71;
+  opacity: 0.85;
+  transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+
+.payment-mark:hover {
+  border-color: var(--ss-accent, #5800ff);
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.payment-mark svg {
+  height: 15px;
+  width: auto;
+}
+
+.footer-section.dark .payment-mark {
+  border-color: var(--ss-line, #374151);
+  background: #1f2937;
+  color: #c7d2fe;
+}
+
+.footer-section.dark .payment-mark:hover {
+  border-color: var(--ss-accent, #a78bfa);
+}
+
+/* ----------------------------------------------------------------
+   Newsletter box inside the brand column
+   ---------------------------------------------------------------- */
+.footer-subscribe {
+  display: flex;
+  max-width: 390px;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.footer-subscribe input {
+  min-width: 0;
+  flex: 1;
+  height: 42px;
+  padding: 0 0.85rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  outline: none;
+  background: var(--ss-surface, #f9fafb);
+  color: #111827;
+  font-family: inherit;
+  font-size: 0.88rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.footer-subscribe input::placeholder {
+  color: #9ca3af;
+}
+
+.footer-subscribe input:focus {
+  border-color: var(--ss-accent, #5800ff);
+  background: var(--ss-surface, #ffffff);
+  box-shadow: 0 0 0 3px rgba(88, 0, 255, 0.12);
+}
+
+.footer-section.dark .footer-subscribe input {
+  border-color: var(--ss-line, #374151);
+  background: #1f2937;
+  color: #f3f4f6;
+}
+
+.footer-section.dark .footer-subscribe input:focus {
+  border-color: var(--ss-accent, #a78bfa);
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.18);
+}
+
+.footer-subscribe button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  height: 42px;
+  padding: 0 1.05rem;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ss-accent, #5800ff);
+  color: #ffffff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.footer-subscribe button:hover {
+  background: #4c00d9;
+  transform: translateY(-1px);
+}
+
+.footer-section.dark .footer-subscribe button {
+  background: var(--ss-accent, #7c3aed);
+}
+
+.footer-section.dark .footer-subscribe button:hover {
+  background: #8b5cf6;
+}
+
+/* Screen-reader-only helper used by the subscribe label. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .footer-section {
+    padding: 3rem 0 1.5rem;
+  }
+
+  .footer-content {
+    gap: 2.25rem;
+    margin-bottom: 2.25rem;
+  }
+}
+
+/* Tightened once more on a phone. This lived in HomePage.css, which
+   meant the home page silently restyled the footer for every other
+   page too — and it fought the 768px rule above rather than extending
+   it. The footer owns its own breakpoints. */
+@media (max-width: 576px) {
+  .footer-content {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-subscribe {
+    flex-direction: column;
+  }
+
+  .footer-subscribe button {
+    justify-content: center;
+  }
+
+  .footer-links {
+    gap: 1.5rem;
+  }
+
+  .footer-column {
+    min-width: calc(50% - 0.75rem);
+  }
+
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

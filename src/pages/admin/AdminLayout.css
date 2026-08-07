@@ -1,0 +1,744 @@
+/* ================================================================
+   Admin shell — every rule is scoped under .ad-* so the dashboard
+   cannot leak into the storefront.
+   ================================================================ */
+.ad-shell {
+    box-sizing: border-box;
+    display: grid;
+    min-height: calc(100vh - 80px);
+    background: #f4f6fb;
+    color: #172033;
+    grid-template-columns: 232px minmax(0, 1fr);
+}
+
+.ad-shell *,
+.ad-shell *::before,
+.ad-shell *::after {
+    box-sizing: border-box;
+}
+
+body.dark .ad-shell {
+    background: #0b1120;
+    color: #e6ecf8;
+}
+
+/* ---------------------------- sidebar ----------------------------- */
+.ad-sidebar {
+    position: sticky;
+    top: 80px;
+    display: flex;
+    height: calc(100vh - 80px);
+    flex-direction: column;
+    padding: 1.35rem 1rem;
+    border-right: 1px solid #e4e8f2;
+    background: #ffffff;
+}
+
+body.dark .ad-sidebar {
+    border-right-color: #1e2740;
+    background: #111828;
+}
+
+.ad-brand {
+    display: grid;
+    gap: 0.1rem;
+    margin-bottom: 1.75rem;
+    padding: 0 0.55rem;
+}
+
+.ad-brand a {
+    color: #4c1fd7;
+    font-size: 1.25rem;
+    font-weight: 850;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+}
+
+.ad-brand span {
+    color: #98a2b3;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+body.dark .ad-brand a {
+    color: #a78bfa;
+}
+
+.ad-nav {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.ad-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 10px;
+    color: #4a5568;
+    font-size: 0.87rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.ad-nav-link i {
+    flex-shrink: 0;
+    font-size: 1rem;
+    opacity: 0.85;
+}
+
+.ad-nav-link:hover {
+    background: #f2f4fb;
+    color: #4c1fd7;
+}
+
+.ad-nav-link.is-active {
+    background: #4c1fd7;
+    box-shadow: 0 6px 14px rgba(76, 31, 215, 0.22);
+    color: #ffffff;
+    font-weight: 700;
+}
+
+body.dark .ad-nav-link {
+    color: #b6c2da;
+}
+
+body.dark .ad-nav-link:hover {
+    background: #1a2338;
+    color: #a78bfa;
+}
+
+body.dark .ad-nav-link.is-active {
+    background: #6d28d9;
+    color: #ffffff;
+}
+
+.ad-sidebar-foot {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #eef0f6;
+}
+
+body.dark .ad-sidebar-foot {
+    border-top-color: #1e2740;
+}
+
+.ad-reset {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px dashed #fbbf24;
+    border-radius: 9px;
+    background: #fffbeb;
+    color: #b45309;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: left;
+}
+
+.ad-reset:hover {
+    background: #fef3c7;
+}
+
+body.dark .ad-reset {
+    border-color: rgba(251, 191, 36, 0.4);
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+}
+
+.ad-back-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 9px;
+    color: #667085;
+    font-size: 0.81rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.ad-back-link:hover {
+    background: #f2f4fb;
+    color: #4c1fd7;
+}
+
+body.dark .ad-back-link {
+    color: #94a3b8;
+}
+
+body.dark .ad-back-link:hover {
+    background: #1a2338;
+    color: #a78bfa;
+}
+
+.ad-user {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.65rem;
+    border-radius: 11px;
+    background: #f6f7fc;
+}
+
+body.dark .ad-user {
+    background: #17203a;
+}
+
+.ad-user-avatar {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: #eeecff;
+    color: #4c1fd7;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.ad-user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+body.dark .ad-user-avatar {
+    background: rgba(124, 58, 237, 0.24);
+    color: #c4b5fd;
+}
+
+.ad-user-info {
+    display: grid;
+    min-width: 0;
+    flex: 1;
+    gap: 0.05rem;
+}
+
+.ad-user-info strong {
+    overflow: hidden;
+    color: #141c33;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ad-user-info span {
+    color: #98a2b3;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+body.dark .ad-user-info strong {
+    color: #e6ecf8;
+}
+
+.ad-user button {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    place-items: center;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #e11d48;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.ad-user button:hover {
+    background: #fff1f2;
+}
+
+body.dark .ad-user button {
+    color: #fb7185;
+}
+
+body.dark .ad-user button:hover {
+    background: rgba(251, 113, 133, 0.14);
+}
+
+/* ----------------------------- content ---------------------------- */
+.ad-main {
+    min-width: 0;
+    padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.ad-backdrop {
+    position: fixed;
+    z-index: 1400;
+    inset: 0;
+    border: 0;
+    background: rgba(9, 14, 28, 0.5);
+    cursor: pointer;
+}
+
+/* ------------------------------ gate ------------------------------ */
+.ad-gate {
+    display: grid;
+    min-height: calc(100vh - 80px);
+    place-content: center;
+    justify-items: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    background: #f4f6fb;
+    text-align: center;
+}
+
+body.dark .ad-gate {
+    background: #0b1120;
+}
+
+.ad-gate-icon {
+    display: grid;
+    width: 62px;
+    height: 62px;
+    margin-bottom: 0.7rem;
+    place-items: center;
+    border-radius: 50%;
+    background: #eeecff;
+    color: #4c1fd7;
+    font-size: 1.6rem;
+}
+
+body.dark .ad-gate-icon {
+    background: rgba(124, 58, 237, 0.2);
+    color: #c4b5fd;
+}
+
+.ad-gate h1 {
+    margin: 0;
+    color: #141c33;
+    font-size: 1.4rem;
+    font-weight: 850;
+}
+
+body.dark .ad-gate h1 {
+    color: #f4f7ff;
+}
+
+.ad-gate p {
+    max-width: 420px;
+    margin: 0 0 0.75rem;
+    color: #667085;
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+body.dark .ad-gate p {
+    color: #94a3b8;
+}
+
+.ad-gate-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-bottom: 0.75rem;
+}
+
+.ad-gate-actions a {
+    padding: 0.65rem 1.4rem;
+    border-radius: 10px;
+    background: #4c1fd7;
+    color: #ffffff;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.ad-gate-actions a.is-ghost {
+    border: 1.5px solid #d8ddf0;
+    background: transparent;
+    color: #4c1fd7;
+}
+
+body.dark .ad-gate-actions a {
+    background: #6d28d9;
+}
+
+body.dark .ad-gate-actions a.is-ghost {
+    border-color: #1e2740;
+    color: #a78bfa;
+}
+
+.ad-gate-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.79rem !important;
+    opacity: 0.8;
+}
+
+.ad-gate-spinner {
+    width: 34px;
+    height: 34px;
+    border: 3px solid #dfe4f1;
+    border-radius: 50%;
+    border-top-color: #4c1fd7;
+    animation: ad-spin 0.7s linear infinite;
+}
+
+@keyframes ad-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+body.dark .ad-gate-spinner {
+    border-color: #1e2740;
+    border-top-color: #a78bfa;
+}
+
+
+/* ============================ topbar ============================== */
+/* Only exists on small screens; on desktop the sidebar carries all of
+   this and a second header would just eat vertical space. */
+.ad-topbar {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    margin: -0.35rem -0.35rem 1rem;
+    padding: 0.5rem 0.35rem;
+}
+
+.ad-menu-toggle,
+.ad-topbar-theme {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    place-items: center;
+    border: 1px solid #e4e8f2;
+    border-radius: 11px;
+    background: #ffffff;
+    color: #172033;
+    cursor: pointer;
+    font-size: 1.15rem;
+}
+
+.ad-menu-toggle:active,
+.ad-topbar-theme:active {
+    background: #f2f4fb;
+}
+
+body.dark .ad-menu-toggle,
+body.dark .ad-topbar-theme {
+    border-color: #1e2740;
+    background: #111828;
+    color: #e6ecf8;
+}
+
+.ad-topbar-title {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    flex: 1;
+    gap: 0.45rem;
+    color: #141c33;
+    font-size: 0.95rem;
+    font-weight: 850;
+    letter-spacing: -0.02em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ad-topbar-title i {
+    color: #4c1fd7;
+}
+
+body.dark .ad-topbar-title {
+    color: #f4f7ff;
+}
+
+body.dark .ad-topbar-title i {
+    color: #a78bfa;
+}
+
+/* --------------------------- drawer close -------------------------- */
+.ad-drawer-close {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: #8b95ab;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.ad-drawer-close:hover {
+    background: #f2f4fb;
+    color: #141c33;
+}
+
+body.dark .ad-drawer-close:hover {
+    background: #1a2338;
+    color: #f4f7ff;
+}
+
+/* --------------------------- preferences --------------------------- */
+.ad-prefs {
+    display: flex;
+    gap: 0.45rem;
+}
+
+.ad-pref-btn {
+    display: inline-flex;
+    align-items: center;
+    flex: 1;
+    gap: 0.45rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid #e4e8f2;
+    border-radius: 9px;
+    background: #ffffff;
+    color: #4a5568;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.79rem;
+    font-weight: 700;
+    transition: border-color 0.18s ease, color 0.18s ease;
+}
+
+.ad-pref-btn:hover {
+    border-color: #c9b7ff;
+    color: #4c1fd7;
+}
+
+body.dark .ad-pref-btn {
+    border-color: #1e2740;
+    background: #0f1626;
+    color: #b6c2da;
+}
+
+body.dark .ad-pref-btn:hover {
+    border-color: #4b3a86;
+    color: #c4b5fd;
+}
+
+.ad-pref-select select {
+    height: 100%;
+    min-height: 34px;
+    padding: 0 1.5rem 0 0.6rem;
+    border: 1px solid #e4e8f2;
+    border-radius: 9px;
+    outline: none;
+    appearance: none;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 16 16' fill='%238b95ab'%3E%3Cpath d='M4 6l4 4 4-4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.45rem center;
+    color: #4a5568;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.79rem;
+    font-weight: 700;
+}
+
+.ad-pref-select select:focus {
+    border-color: #4c1fd7;
+}
+
+body.dark .ad-pref-select select {
+    border-color: #1e2740;
+    background-color: #0f1626;
+    color: #b6c2da;
+}
+
+.ad-sr-only {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ----------------------- reset breakdown list ---------------------- */
+.ad-reset-breakdown {
+    display: grid;
+    gap: 0.45rem;
+    width: 100%;
+    margin: 0.35rem 0 0;
+    padding: 0.85rem 1rem;
+    border-radius: 11px;
+    background: #f8f9fd;
+    list-style: none;
+    text-align: left;
+}
+
+.ad-reset-breakdown li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: #4a5568;
+    font-size: 0.82rem;
+}
+
+.ad-reset-breakdown li i {
+    color: #8b95ab;
+    font-size: 0.9rem;
+}
+
+.ad-reset-breakdown li strong {
+    color: #141c33;
+    font-weight: 850;
+}
+
+.ad-reset-breakdown li.is-warn {
+    color: #b45309;
+}
+
+.ad-reset-breakdown li.is-warn i,
+.ad-reset-breakdown li.is-warn strong {
+    color: #b45309;
+}
+
+body.dark .ad-reset-breakdown {
+    background: #0f1626;
+}
+
+body.dark .ad-reset-breakdown li {
+    color: #b6c2da;
+}
+
+body.dark .ad-reset-breakdown li strong {
+    color: #f4f7ff;
+}
+
+body.dark .ad-reset-breakdown li.is-warn,
+body.dark .ad-reset-breakdown li.is-warn i,
+body.dark .ad-reset-breakdown li.is-warn strong {
+    color: #fbbf24;
+}
+
+/* --------------------------- responsive ---------------------------- */
+@media (max-width: 1024px) {
+    .ad-shell {
+        grid-template-columns: 200px minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .ad-shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ad-sidebar {
+        position: fixed;
+        z-index: 1500;
+        top: 0;
+        left: 0;
+        width: min(280px, 84vw);
+        height: 100dvh;
+        /* 100dvh keeps the footer reachable when mobile browser chrome
+       slides away — 100vh leaves the sign-out button under the URL bar. */
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform 0.28s ease;
+    }
+
+    .ad-sidebar.is-open {
+        transform: translateX(0);
+        box-shadow: 0 0 60px rgba(9, 14, 28, 0.35);
+    }
+
+    .ad-brand {
+        position: relative;
+        padding-right: 2.2rem;
+    }
+
+    .ad-drawer-close {
+        display: grid;
+    }
+
+    .ad-topbar {
+        display: flex;
+    }
+
+    .ad-main {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ad-main {
+        padding: 0.85rem 0.75rem 2rem;
+    }
+
+    .ad-topbar {
+        margin-bottom: 0.75rem;
+    }
+
+    .ad-gate {
+        padding: 1.5rem 1.1rem;
+    }
+
+    .ad-gate-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .ad-gate-actions a {
+        text-align: center;
+    }
+}
+
+/* Touch targets: anything tappable gets at least 40px on coarse
+   pointers, where a 30px icon button is a miss more often than a hit. */
+@media (pointer: coarse) {
+    .ad-nav-link {
+        min-height: 46px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ad-sidebar,
+    .ad-gate-spinner,
+    .ad-pref-btn {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* Live count of returns needing a decision. */
+.ad-nav-badge {
+    display: grid;
+    min-width: 20px;
+    height: 20px;
+    margin-left: auto;
+    place-items: center;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #e11d48;
+    color: #ffffff;
+    font-size: 0.68rem;
+    font-weight: 800;
+}
+
+.ad-nav-link.is-active .ad-nav-badge {
+    background: rgba(255, 255, 255, 0.28);
+}
+
+body.dark .ad-nav-badge {
+    background: #fb7185;
+    color: #2a0710;
+}

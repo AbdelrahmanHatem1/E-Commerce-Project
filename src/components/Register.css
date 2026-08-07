@@ -1,0 +1,653 @@
+/* ================================================================
+   Register page
+   ================================================================ */
+.register-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  background: #1a1f2e;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+}
+
+.register-page.light .register-card {
+  border-color: #e0e0e0;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.register-card h2 {
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.register-page.light .register-card h2 {
+  color: #1a1f2e;
+}
+
+.register-subtitle {
+  margin-bottom: 2rem;
+  color: #8f9bb9;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.register-page.light .register-subtitle {
+  color: #6b7280;
+}
+
+.register-page .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.register-page .form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  color: #d6def5;
+  font-weight: 600;
+}
+
+.register-page.light .form-group label {
+  color: #374151;
+}
+
+.register-page .input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Bootstrap icons inside the inputs. */
+.register-page .input-icon {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 16px;
+  color: #8f9bb9;
+  font-size: 1.1rem;
+  line-height: 1;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.register-page.light .input-icon {
+  color: #6b7280;
+}
+
+.register-page .toggle-password {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 16px;
+  color: #8f9bb9;
+  font-size: 1.1rem;
+  line-height: 1;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.register-page.light .toggle-password {
+  color: #6b7280;
+}
+
+.register-page .form-group input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 44px 12px 48px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.04);
+  color: #d6def5;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.register-page .form-group input::placeholder {
+  color: #6b7280;
+}
+
+.register-page.light .form-group input {
+  border-color: #e5e7eb;
+  background: #f9fafb;
+  color: #111827;
+}
+
+.register-page.light .form-group input::placeholder {
+  color: #9ca3af;
+}
+
+.register-page .form-group input:focus {
+  border-color: #ff6b6b;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15);
+}
+
+.register-page.light .form-group input:focus {
+  border-color: #5800ff;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(88, 0, 255, 0.14);
+}
+
+.register-page .form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.register-page .form-row .form-group {
+  min-width: 0;
+  flex: 1;
+}
+
+.register-page .checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  color: #8f9bb9;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.register-page.light .checkbox-label {
+  color: #6b7280;
+}
+
+.register-page .checkbox-label input {
+  width: auto;
+  margin-top: 0.2rem;
+  accent-color: #ff6b6b;
+}
+
+.register-page.light .checkbox-label input {
+  accent-color: #5800ff;
+}
+
+.register-page .checkbox-label a {
+  color: #4ecdc4;
+  text-decoration: none;
+}
+
+.register-page.light .checkbox-label a {
+  color: #5800ff;
+}
+
+.register-page .btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0.5rem;
+  padding: 14px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ff6b6b, #ff8b5b);
+  box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.register-page.light .btn-primary {
+  background: linear-gradient(135deg, #5800ff, #8338ec);
+  box-shadow: 0 10px 20px rgba(88, 0, 255, 0.3);
+}
+
+.register-page .btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.register-page .btn-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.register-page .signup-arrow {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.register-page .btn-primary:hover:not(:disabled) .register-page .signup-arrow {
+  transform: translateX(5px);
+}
+
+.register-page .divider {
+  position: relative;
+  margin: 1.5rem 0;
+  color: #8f9bb9;
+  text-align: center;
+}
+
+.register-page.light .divider {
+  color: #6b7280;
+}
+
+.register-page .divider::before,
+.register-page .divider::after {
+  position: absolute;
+  top: 50%;
+  width: 35%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  content: '';
+}
+
+.register-page.light .divider::before,
+.register-page.light .divider::after {
+  background: #e5e7eb;
+}
+
+.register-page .divider::before {
+  left: 0;
+}
+
+.register-page .divider::after {
+  right: 0;
+}
+
+.register-page .social-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.register-page .btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 0.5rem;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #d6def5;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.register-page.light .btn-social {
+  border-color: #e5e7eb;
+  background: #f9fafb;
+  color: #111827;
+}
+
+.register-page .btn-social:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.register-page.light .btn-social:hover {
+  background: #f3f4f6;
+}
+
+.register-page .login-link {
+  margin: 0;
+  color: #8f9bb9;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.register-page.light .login-link {
+  color: #6b7280;
+}
+
+.register-page .login-link a {
+  color: #4ecdc4;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-page.light .login-link a {
+  color: #5800ff;
+}
+
+.register-page .login-link a:hover,
+.register-page .checkbox-label a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 576px) {
+  .register-page {
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .register-card {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .register-page .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+/* ================================================================
+   Additions — validation, username availability, password strength
+   Everything stays scoped under .register-page.
+   ================================================================ */
+
+/* --------------------------- field errors --------------------------- */
+.register-page .field-error {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.35rem 0 0;
+  color: #e0525f;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.register-page.light .field-error {
+  color: #d32f3f;
+}
+
+.register-page .form-group input[aria-invalid='true'] {
+  border-color: #e0525f;
+}
+
+.register-page .form-group input[aria-invalid='true']:focus {
+  border-color: #e0525f;
+  box-shadow: 0 0 0 3px rgba(224, 82, 95, 0.16);
+}
+
+/* ---------------------- username availability ----------------------- */
+.register-page .field-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.register-page .field-hint.is-checking {
+  color: #8f9bb9;
+}
+
+.register-page .field-hint.is-available {
+  color: #34d399;
+}
+
+.register-page .field-hint.is-taken,
+.register-page .field-hint.is-invalid {
+  color: #e0525f;
+}
+
+.register-page.light .field-hint.is-checking {
+  color: #6b7280;
+}
+
+.register-page.light .field-hint.is-available {
+  color: #0f7355;
+}
+
+.register-page.light .field-hint.is-taken,
+.register-page.light .field-hint.is-invalid {
+  color: #d32f3f;
+}
+
+/* Coloured border reflecting the live check. */
+.register-page .input-with-icon.is-available input {
+  border-color: #34d399;
+}
+
+.register-page .input-with-icon.is-taken input,
+.register-page .input-with-icon.is-invalid input {
+  border-color: #e0525f;
+}
+
+.register-page .input-status {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 14px;
+  font-size: 0.95rem;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.register-page .input-status.is-ok {
+  color: #34d399;
+}
+
+.register-page .input-status.is-bad {
+  color: #e0525f;
+}
+
+.register-page .input-spinner {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 14px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(143, 155, 185, 0.35);
+  border-radius: 50%;
+  border-top-color: #8f9bb9;
+  animation: register-spin 0.7s linear infinite;
+  transform: translateY(-50%);
+}
+
+.register-page.light .input-spinner {
+  border-color: rgba(107, 114, 128, 0.28);
+  border-top-color: #6b7280;
+}
+
+@keyframes register-spin {
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+/* Room for the status icon on the right of the username field. */
+.register-page .input-with-icon.is-available input,
+.register-page .input-with-icon.is-taken input,
+.register-page .input-with-icon.is-invalid input,
+.register-page .input-with-icon.is-checking input {
+  padding-right: 40px;
+}
+
+/* -------------------------- toggle password ------------------------- */
+.register-page .toggle-password {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 10px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #8f9bb9;
+  cursor: pointer;
+  font-size: 1.05rem;
+  pointer-events: auto;
+  transform: translateY(-50%);
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.register-page .toggle-password:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+}
+
+.register-page.light .toggle-password {
+  color: #6b7280;
+}
+
+.register-page.light .toggle-password:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* ------------------------ password strength ------------------------- */
+.register-page .password-strength {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.register-page .strength-bars {
+  display: flex;
+  flex: 1;
+  gap: 0.25rem;
+}
+
+.register-page .strength-bar {
+  height: 4px;
+  flex: 1;
+  border-radius: 999px;
+  background: rgba(143, 155, 185, 0.25);
+  transition: background 0.25s ease;
+}
+
+.register-page.light .strength-bar {
+  background: #e5e7eb;
+}
+
+.register-page .strength-bar.is-filled.level-1,
+.register-page .strength-bar.is-filled.level-2 {
+  background: #ef4444;
+}
+
+.register-page .strength-bar.is-filled.level-3 {
+  background: #f59e0b;
+}
+
+.register-page .strength-bar.is-filled.level-4 {
+  background: #3b82f6;
+}
+
+.register-page .strength-bar.is-filled.level-5 {
+  background: #34d399;
+}
+
+.register-page .strength-label {
+  min-width: 46px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-align: right;
+}
+
+.register-page .strength-label.level-1,
+.register-page .strength-label.level-2 {
+  color: #ef4444;
+}
+
+.register-page .strength-label.level-3 {
+  color: #f59e0b;
+}
+
+.register-page .strength-label.level-4 {
+  color: #3b82f6;
+}
+
+.register-page .strength-label.level-5 {
+  color: #34d399;
+}
+
+/* --------------------------- rule checklist -------------------------- */
+.register-page .password-checks {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  list-style: none;
+}
+
+.register-page .password-checks li {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #8f9bb9;
+  font-size: 0.71rem;
+  transition: color 0.2s ease;
+}
+
+.register-page.light .password-checks li {
+  color: #9ca3af;
+}
+
+.register-page .password-checks li.is-met {
+  color: #34d399;
+}
+
+.register-page.light .password-checks li.is-met {
+  color: #0f7355;
+}
+
+.register-page .password-checks i {
+  font-size: 0.8rem;
+}
+
+/* ---------------------------- submit state --------------------------- */
+.register-page .register-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: register-btn-spin 0.7s linear infinite;
+}
+
+@keyframes register-btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.register-page .btn-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* ------------------------------ focus -------------------------------- */
+.register-page .form-group input:focus-visible,
+.register-page .btn-primary:focus-visible,
+.register-page .btn-social:focus-visible,
+.register-page .toggle-password:focus-visible {
+  outline: 3px solid rgba(88, 0, 255, 0.35);
+  outline-offset: 2px;
+}
+
+.register-page.dark .form-group input:focus-visible,
+.register-page.dark .btn-primary:focus-visible,
+.register-page.dark .btn-social:focus-visible,
+.register-page.dark .toggle-password:focus-visible {
+  outline-color: rgba(255, 107, 107, 0.42);
+}
+
+/* ---------------------------- responsive ------------------------------ */
+@media (max-width: 576px) {
+  .register-page .password-checks {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .register-page .input-spinner,
+  .register-page .register-spinner {
+    animation-duration: 2s;
+  }
+}

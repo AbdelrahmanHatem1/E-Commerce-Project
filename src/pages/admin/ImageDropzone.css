@@ -1,0 +1,457 @@
+/* ============== Admin · Image dropzone (.dz-*) ============== */
+.dz {
+    position: relative;
+    display: grid;
+    gap: 0.7rem;
+    padding: 0.9rem;
+    border: 1px solid #e4e8f2;
+    border-radius: 14px;
+    background: #fbfcff;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.dz.is-dragging {
+    border-color: #4c1fd7;
+    background: #f5f2ff;
+}
+
+.dz.is-busy {
+    opacity: 0.85;
+}
+
+body.dark .dz {
+    border-color: #1e2740;
+    background: #0f1626;
+}
+
+body.dark .dz.is-dragging {
+    border-color: #a78bfa;
+    background: rgba(124, 58, 237, 0.1);
+}
+
+/* -------------------------- header -------------------------- */
+.dz-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+}
+
+.dz-title {
+    color: #344054;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.dz-count {
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: #eef1f8;
+    color: #667085;
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+body.dark .dz-title {
+    color: #94a3b8;
+}
+
+body.dark .dz-count {
+    background: #182136;
+    color: #b6c2da;
+}
+
+/* --------------------------- hero --------------------------- */
+.dz-hero {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border: 2px solid #7c5cff;
+    border-radius: 13px;
+    background: #eef1f6;
+}
+
+.dz-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+body.dark .dz-hero {
+    border-color: #7c5cff;
+    background: #16203a;
+}
+
+.dz-hero.is-empty {
+    display: grid;
+    align-content: center;
+    gap: 0.3rem;
+    padding: 1rem;
+    border: 1.5px dashed #c7cdf0;
+    background: #fff;
+    color: #8b95ab;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: center;
+}
+
+.dz-hero.is-empty:hover:not(:disabled) {
+    border-color: #4c1fd7;
+    background: #f7f5ff;
+}
+
+.dz-hero.is-empty i {
+    color: #4c1fd7;
+    font-size: 1.7rem;
+}
+
+.dz-hero.is-empty strong {
+    color: #141c33;
+    font-size: 0.88rem;
+    font-weight: 800;
+}
+
+.dz-hero.is-empty small {
+    font-size: 0.75rem;
+}
+
+body.dark .dz-hero.is-empty {
+    border-color: #2b3550;
+    background: #0b1220;
+}
+
+body.dark .dz-hero.is-empty strong {
+    color: #f4f7ff;
+}
+
+body.dark .dz-hero.is-empty i {
+    color: #a78bfa;
+}
+
+.dz-cover-tag {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.6rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(20, 28, 51, 0.78);
+    color: #fff;
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.dz-hero-tools {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    display: flex;
+    gap: 0.4rem;
+}
+
+.dz-hero-tools button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    padding: 0.4rem 0.75rem;
+    border: 0;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.94);
+    color: #344054;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+}
+
+.dz-hero-tools button:hover:not(:disabled) {
+    background: #fff;
+    color: #4c1fd7;
+}
+
+.dz-hero-tools button.is-danger:hover:not(:disabled) {
+    color: #e11d48;
+}
+
+.dz-hero-tools button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+/* ------------------------- thumb grid ------------------------ */
+.dz-grid {
+    display: grid;
+    gap: 0.55rem;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+}
+
+.dz-thumb {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 2px solid transparent;
+    border-radius: 11px;
+    background: #eef1f6;
+}
+
+.dz-thumb.is-active {
+    border-color: #4c1fd7;
+}
+
+body.dark .dz-thumb {
+    background: #16203a;
+}
+
+body.dark .dz-thumb.is-active {
+    border-color: #a78bfa;
+}
+
+.dz-thumb-pick {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.dz-thumb-pick img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.dz-thumb-x {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: grid;
+    width: 22px;
+    height: 22px;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(20, 28, 51, 0.72);
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.72rem;
+    opacity: 0;
+    transition: opacity 0.18s ease, background 0.18s ease;
+}
+
+.dz-thumb:hover .dz-thumb-x,
+.dz-thumb-x:focus-visible {
+    opacity: 1;
+}
+
+.dz-thumb-x:hover {
+    background: #e11d48;
+}
+
+/* Touch has no hover, so keep the remove button visible there. */
+@media (hover: none) {
+    .dz-thumb-x {
+        opacity: 1;
+    }
+}
+
+.dz-thumb-tag {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 2px 0;
+    background: rgba(20, 28, 51, 0.72);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.dz-add {
+    display: grid;
+    aspect-ratio: 1;
+    place-content: center;
+    justify-items: center;
+    gap: 0.3rem;
+    border: 1.5px dashed #c7cdf0;
+    border-radius: 11px;
+    background: #fff;
+    color: #8b95ab;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.dz-add:hover:not(:disabled) {
+    border-color: #4c1fd7;
+    background: #f7f5ff;
+    color: #4c1fd7;
+}
+
+.dz-add:disabled {
+    cursor: progress;
+}
+
+.dz-add i {
+    font-size: 1.15rem;
+}
+
+body.dark .dz-add {
+    border-color: #2b3550;
+    background: #0b1220;
+}
+
+body.dark .dz-add:hover:not(:disabled) {
+    border-color: #a78bfa;
+    background: rgba(124, 58, 237, 0.1);
+    color: #a78bfa;
+}
+
+.dz-spinner {
+    width: 15px;
+    height: 15px;
+    border: 2px solid rgba(124, 92, 255, 0.28);
+    border-top-color: #7c5cff;
+    border-radius: 50%;
+    animation: dz-spin 0.7s linear infinite;
+}
+
+@keyframes dz-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --------------------------- footer -------------------------- */
+.dz-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.dz-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #4c1fd7;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.dz-link:hover {
+    text-decoration: underline;
+}
+
+body.dark .dz-link {
+    color: #a78bfa;
+}
+
+.dz-note {
+    color: #98a2b3;
+    font-size: 0.72rem;
+}
+
+.dz-url {
+    display: flex;
+    gap: 0.45rem;
+}
+
+.dz-url input {
+    flex: 1;
+    min-width: 0;
+    height: 36px;
+    padding: 0 0.7rem;
+    border: 1px solid #e0e5f1;
+    border-radius: 9px;
+    outline: none;
+    background: #fff;
+    color: #172033;
+    font-family: inherit;
+    font-size: 0.82rem;
+}
+
+.dz-url input:focus {
+    border-color: #4c1fd7;
+}
+
+.dz-url button {
+    padding: 0 1rem;
+    border: 0;
+    border-radius: 9px;
+    background: #4c1fd7;
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+body.dark .dz-url input {
+    border-color: #2b3550;
+    background: #0b1220;
+    color: #edf2ff;
+}
+
+body.dark .dz-url button {
+    background: #6d28d9;
+}
+
+/* --------------------------- drag veil ----------------------- */
+.dz-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 0.4rem;
+    border-radius: 14px;
+    background: rgba(76, 31, 215, 0.9);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 800;
+    pointer-events: none;
+}
+
+.dz-veil i {
+    font-size: 1.9rem;
+}
+
+@media (max-width: 480px) {
+    .dz-grid {
+        grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+    }
+
+    .dz-hero-tools {
+        left: 0.6rem;
+        justify-content: center;
+    }
+
+    .dz-hero-tools button {
+        flex: 1;
+        justify-content: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dz-spinner {
+        animation: none !important;
+    }
+}

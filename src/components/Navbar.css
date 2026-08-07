@@ -1,0 +1,757 @@
+/* ================================================================
+   Navbar
+   ================================================================ */
+/* ------------------------------------------------------------------
+   Frosted-glass navbar.
+
+   The bar itself stays transparent. The glass is a ::before layer that
+   sits behind the content and carries the themed colour at reduced
+   opacity, plus the blur.
+
+   Why a layer instead of a translucent background colour: alpha cannot
+   be applied to a colour that arrives through a custom property, so the
+   old rule mixed the surface colour with `transparent` at 85%. That
+   mixing function is resolved at computed-value time — if the engine
+   does not support it the whole declaration is thrown away and the bar
+   loses its background entirely. Painting a solid themed colour on a
+   layer and dimming that layer with `opacity` gives the same look,
+   follows the theme exactly, and cannot invalidate in any browser.
+   ------------------------------------------------------------------ */
+.navbar-main {
+  position: sticky;
+  z-index: 2000;
+  top: 0;
+  display: flex;
+  height: 80px;
+  align-items: center;
+  /* Transparent: the ::before layer below is the glass. */
+  background: transparent;
+  transition: border-color 0.4s ease;
+}
+
+.navbar-main::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  background: var(--ss-surface, #ffffff);
+  /* The translucency itself. Tuned per mode below. */
+  opacity: 0.72;
+  content: '';
+  transition: background 0.4s ease, opacity 0.4s ease;
+}
+
+/* A hairline highlight along the bottom edge sells the glass far more
+   than the blur does on its own. */
+.navbar-main::after {
+  position: absolute;
+  z-index: -1;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent,
+      var(--ss-accent, #5800ff),
+      transparent);
+  opacity: 0.35;
+  content: '';
+}
+
+.navbar-main.light {
+  border-bottom: 1px solid var(--ss-line, rgba(0, 0, 0, 0.06));
+}
+
+/* Light surfaces need slightly more opacity or text loses contrast
+   against a busy hero photo scrolling underneath. */
+.navbar-main.light::before {
+  opacity: 0.78;
+}
+
+.navbar-main.dark {
+  border-bottom: 1px solid var(--ss-line, rgba(255, 255, 255, 0.06));
+}
+
+.navbar-main.dark::before {
+  opacity: 0.68;
+}
+
+/* Deepen the glass once the page scrolls under it, so the bar reads as
+   a distinct surface rather than a smudge. */
+.navbar-main.is-scrolled::before {
+  opacity: 0.92;
+}
+
+.navbar-main.is-scrolled {
+  box-shadow: 0 8px 30px rgba(9, 14, 28, 0.12);
+}
+
+/* backdrop-filter needs a compositing layer; without this the blur is
+   silently skipped in some engines when the parent is also stacked. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+
+  /* No blur available — fall back to a near-solid bar so the text
+     never sits on top of moving content. */
+  .navbar-main::before {
+    opacity: 0.97;
+  }
+}
+
+.nav-container {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 1400px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ------------------------------ logo ------------------------------ */
+/* The brand is now a <Logo>, which brings its own type scale and
+   spacing. This rule only positions the link and hands down the colour
+   — the font declarations that used to live here fought the wordmark's
+   own two-weight treatment. */
+.nav-brand {
+  display: inline-flex;
+  align-items: center;
+  color: var(--ss-accent, #5800ff) !important;
+  text-decoration: none;
+}
+
+.nav-brand:focus-visible,
+.nav-link-item:focus-visible,
+.icon-btn:focus-visible,
+.dropdown-link:focus-visible,
+.mobile-toggle-btn:focus-visible {
+  border-radius: 8px;
+  outline: 3px solid rgba(88, 0, 255, 0.4);
+  outline-offset: 3px;
+}
+
+.navbar-main.dark .nav-brand:focus-visible,
+.navbar-main.dark .nav-link-item:focus-visible,
+.navbar-main.dark .icon-btn:focus-visible,
+.navbar-main.dark .dropdown-link:focus-visible,
+.navbar-main.dark .mobile-toggle-btn:focus-visible {
+  outline-color: rgba(167, 139, 250, 0.55);
+}
+
+/* -------------------------- desktop links -------------------------- */
+.nav-center {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.nav-link-item {
+  position: relative;
+  color: #4b5563;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.navbar-main.dark .nav-link-item {
+  color: #d1d5db;
+}
+
+.nav-link-item:hover,
+.nav-link-item.is-active {
+  color: var(--ss-accent, #5800ff) !important;
+}
+
+.navbar-main.dark .nav-link-item:hover,
+.navbar-main.dark .nav-link-item.is-active {
+  color: var(--ss-accent, #a78bfa) !important;
+}
+
+.nav-link-item::after {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--ss-accent, #5800ff);
+  content: '';
+  transition: width 0.3s ease;
+}
+
+.navbar-main.dark .nav-link-item::after {
+  background: var(--ss-accent, #a78bfa);
+}
+
+.nav-link-item:hover::after,
+.nav-link-item.is-active::after {
+  width: 100%;
+}
+
+/* ---------------------------- actions ----------------------------- */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* ---------------------------- search ------------------------------ */
+.nav-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 8px;
+  /* A hairline in the theme's line colour instead of a transparent
+     border, so the field reads as etched into the glass. */
+  border: 1px solid var(--ss-line, rgba(0, 0, 0, 0.08));
+  border-radius: 12px;
+  /* Deliberately kept as a translucent black/white wash rather than a
+     solid themed colour: on glass, a solid fill looks like a sticker.
+     The wash picks up whatever is behind the bar. */
+  background: rgba(0, 0, 0, 0.05);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar-main.dark .nav-search {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-search:focus-within {
+  border-color: var(--ss-accent, #5800ff);
+  background: var(--ss-surface, #ffffff);
+  box-shadow: 0 0 0 4px rgba(88, 0, 255, 0.1);
+}
+
+.navbar-main.dark .nav-search:focus-within {
+  border-color: var(--ss-accent, #a78bfa);
+  background: var(--ss-surface, #1a202c);
+  box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.16);
+}
+
+.nav-search input {
+  width: 180px;
+  border: none;
+  outline: none;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+/* Hide the browser's native clear button — we render our own. */
+.nav-search input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.nav-search-submit,
+.nav-search-clear {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.nav-search-submit:hover,
+.nav-search-clear:hover {
+  background: rgba(88, 0, 255, 0.1);
+  color: var(--ss-accent, #5800ff);
+}
+
+.navbar-main.dark .nav-search-submit:hover,
+.navbar-main.dark .nav-search-clear:hover {
+  background: rgba(167, 139, 250, 0.16);
+  color: var(--ss-accent, #c4b5fd);
+}
+
+.nav-search-clear {
+  font-size: 1.05rem;
+}
+
+.search-icon {
+  font-size: 0.9rem;
+}
+
+/* -------------------------- icon buttons --------------------------- */
+.icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #4b5563;
+  cursor: pointer;
+  font-size: 1.4rem;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-main.dark .icon-btn {
+  color: #d1d5db;
+}
+
+.icon-btn:hover {
+  color: var(--ss-accent, #5800ff) !important;
+  transform: translateY(-2px);
+}
+
+.navbar-main.dark .icon-btn:hover {
+  color: var(--ss-accent, #a78bfa) !important;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  display: flex;
+  min-width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  background: #ff4757;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  animation: cart-badge-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.navbar-main.dark .cart-badge {
+  border-color: #0a0f1a;
+}
+
+@keyframes cart-badge-pop {
+  from {
+    transform: scale(0.4);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* ---------------------------- profile ------------------------------ */
+.profile-section {
+  position: relative;
+}
+
+.user-dot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background: #2ed573;
+}
+
+.navbar-main.dark .user-dot {
+  border-color: #0a0f1a;
+}
+
+.profile-dropdown-menu {
+  position: absolute;
+  top: 130%;
+  right: 0;
+  display: flex;
+  width: 230px;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem;
+  border-radius: 16px;
+  background: var(--ss-surface, #ffffff);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  animation: dropdownFade 0.25s ease;
+}
+
+.navbar-main.dark .profile-dropdown-menu {
+  background: var(--ss-surface, #1a202c);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-info-header {
+  margin-bottom: 0.35rem;
+  padding: 0 0.3rem 0.55rem;
+  border-bottom: 1px solid #f1f2f6;
+}
+
+.navbar-main.dark .user-info-header {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.user-greet {
+  margin: 0;
+  color: #1f2937;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.navbar-main.dark .user-greet {
+  color: #f9fafb;
+}
+
+.user-email {
+  overflow: hidden;
+  margin: 0.15rem 0 0;
+  color: #9ca3af;
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: #4b5563;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-link i {
+  font-size: 1rem;
+  opacity: 0.75;
+}
+
+.dropdown-link:hover {
+  background: var(--ss-canvas, #f1f2f6);
+  color: var(--ss-accent, #5800ff);
+}
+
+.navbar-main.dark .dropdown-link {
+  color: #d1d5db;
+}
+
+.navbar-main.dark .dropdown-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ss-accent, #c4b5fd);
+}
+
+.dropdown-pill {
+  min-width: 18px;
+  margin-left: auto;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--ss-accent, #5800ff);
+  color: #ffffff;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.navbar-main.dark .dropdown-pill {
+  background: var(--ss-accent, #7c3aed);
+}
+
+.dropdown-logout {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: #fff0f0;
+  color: #ff4757;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  transition: background 0.2s ease;
+}
+
+.dropdown-logout:hover {
+  background: #ffe0e0;
+}
+
+.navbar-main.dark .dropdown-logout {
+  background: rgba(255, 71, 87, 0.14);
+  color: #ff8b95;
+}
+
+.navbar-main.dark .dropdown-logout:hover {
+  background: rgba(255, 71, 87, 0.24);
+}
+
+/* ------------------------- mobile toggle --------------------------- */
+.mobile-toggle-btn {
+  display: flex;
+  align-items: center;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1.8rem;
+}
+
+/* ------------------------- mobile overlay -------------------------- */
+.mobile-nav-overlay {
+  position: fixed;
+  z-index: 1500;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  background: var(--ss-surface, #ffffff);
+  transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-main.dark .mobile-nav-overlay {
+  background: var(--ss-surface, #0a0f1a);
+}
+
+.mobile-nav-overlay.active {
+  height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.mobile-nav-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 2rem;
+}
+
+.mobile-nav-content a {
+  color: inherit;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.mobile-nav-content a:hover,
+.mobile-nav-content a.is-active {
+  color: var(--ss-accent, #5800ff);
+}
+
+.navbar-main.dark .mobile-nav-content a:hover,
+.navbar-main.dark .mobile-nav-content a.is-active {
+  color: var(--ss-accent, #a78bfa);
+}
+
+.mobile-cart-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.mobile-cart-link .dropdown-pill {
+  margin-left: 0;
+  font-size: 0.8rem;
+}
+
+.mobile-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--ss-canvas, #f1f2f6);
+}
+
+.navbar-main.dark .mobile-search {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.mobile-search input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.mobile-search input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.mobile-search button {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  font-size: 1.05rem;
+}
+
+.mobile-nav-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #f1f2f6;
+}
+
+.navbar-main.dark .mobile-nav-footer {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.mobile-auth-link {
+  flex: 1;
+  min-width: 130px;
+  padding: 12px 18px;
+  border: 1.5px solid #5800ff;
+  border-radius: 12px;
+  color: var(--ss-accent, #5800ff) !important;
+  font-size: 1rem !important;
+  font-weight: 700;
+  text-align: center;
+}
+
+.mobile-auth-link.is-primary {
+  background: var(--ss-accent, #5800ff);
+  color: #ffffff !important;
+}
+
+.navbar-main.dark .mobile-auth-link {
+  border-color: var(--ss-accent, #a78bfa);
+  color: var(--ss-accent, #a78bfa) !important;
+}
+
+.navbar-main.dark .mobile-auth-link.is-primary {
+  background: var(--ss-accent, #7c3aed);
+  border-color: var(--ss-accent, #7c3aed);
+  color: #ffffff !important;
+}
+
+.mobile-nav-footer .dropdown-logout {
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* --------------------------- responsive ---------------------------- */
+@media (max-width: 992px) {
+  .nav-container {
+    padding: 0 1.25rem;
+  }
+
+  .nav-right {
+    gap: 1.1rem;
+  }
+
+  .nav-search input {
+    width: 130px;
+  }
+}
+
+@media (max-width: 576px) {
+  .nav-container {
+    padding: 0 1rem;
+  }
+
+  .nav-brand {
+    font-size: 1.4rem;
+  }
+
+  .nav-right {
+    gap: 0.9rem;
+  }
+
+  .profile-dropdown-menu {
+    width: min(260px, calc(100vw - 2rem));
+  }
+}
+
+/* Respect the visitor's motion preference. */
+@media (prefers-reduced-motion: reduce) {
+
+  .mobile-nav-overlay,
+  .profile-dropdown-menu,
+  .cart-badge,
+  .icon-btn,
+  .nav-link-item::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------------------- wishlist icon (Navbar) --------------------- */
+.wish-btn {
+  font-size: 1.3rem;
+}
+
+.wish-btn .bi-heart-fill {
+  color: #e11d48;
+}
+
+.navbar-main.dark .wish-btn .bi-heart-fill {
+  color: #fb7185;
+}
+
+.wish-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  display: flex;
+  min-width: 18px;
+  height: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  background: #e11d48;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  animation: cart-badge-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.navbar-main.dark .wish-badge {
+  border-color: #0a0f1a;
+  background: #fb7185;
+}
+
+/* Admin entry inside the profile dropdown. */
+.dropdown-link.is-admin {
+  background: #f4f2ff;
+  color: var(--ss-accent, #4c1fd7);
+  font-weight: 700;
+}
+
+.dropdown-link.is-admin:hover {
+  background: #ebe7ff;
+}
+
+.navbar-main.dark .dropdown-link.is-admin {
+  background: rgba(124, 58, 237, 0.16);
+  color: var(--ss-accent, #c4b5fd);
+}

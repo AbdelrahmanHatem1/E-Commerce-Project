@@ -1,0 +1,176 @@
+/* ----------------------------------------------------------------
+   Theme bridge.
+
+   `applyTheme` writes --ss-* custom properties onto <html>, but the
+   storefront stylesheets predate them and still carry literal hex
+   values, many behind `body.dark .thing` — a selector with higher
+   specificity than a plain class.
+
+   Rewriting ~150 declarations across fifteen files would be a large,
+   risky change. Instead this sheet re-points the surfaces that carry
+   the brand at the variables, matching or beating the specificity of
+   the rules it needs to override.
+
+   Two rules govern everything below:
+
+     1. It only applies when a non-default theme is active, so the
+        original design is untouched unless the admin asks for a season.
+     2. It never targets the admin panel — an operator switching the
+        shop to Summer should not have their tools turn orange.
+
+   `html[data-ss-theme]:not([data-ss-theme='default'])` is written as
+   THEME below for brevity in comments only; CSS has no variables for
+   selectors, so it is repeated in full.
+   ---------------------------------------------------------------- */
+
+/* ------------------------------ page ------------------------------ */
+html[data-ss-theme]:not([data-ss-theme='default']) body,
+html[data-ss-theme]:not([data-ss-theme='default']) body.dark {
+    background: var(--ss-canvas);
+    color: var(--ss-ink);
+}
+
+/* Page shells. Doubling the attribute lifts specificity above the
+   `body.dark .x` rules in the original sheets without !important. */
+/* Every page root, taken from the actual class names rather than
+   guessed: the first version used `.products-page` and `.categories-
+   page`, which do not exist, so those pages kept the original palette. */
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.homepage-main,
+    .pp-page,
+    .pd-page,
+    .cg-page,
+    .cp-page,
+    .cart-page,
+    .checkout-page,
+    .oc-page,
+    .pr-page,
+    .rt-page,
+    .sp-page,
+    .lg-page) {
+    background: var(--ss-canvas);
+    color: var(--ss-ink);
+}
+
+/* --------------------------- home sections ------------------------ */
+/* These carry their own background in HomePage.css under body.dark, so
+   the selector here has to be at least as specific. */
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.hero-section,
+    .featured-products-section,
+    .deals-section,
+    .top-rated-section,
+    .recent-section,
+    .benefits-section,
+    .newsletter-section) {
+    background: var(--ss-canvas);
+}
+
+/* Alternating bands lift onto the surface tone so the rhythm survives. */
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.top-categories-section,
+    .testimonials-section) {
+    background: var(--ss-surface);
+}
+
+/* ------------------------------ cards ----------------------------- */
+/* `background-color`, never the `background` shorthand.
+
+   This is what broke Top Categories. Those cards carry their photo as
+   an inline `background-image`, and HomePage.css sizes it with
+   `background-size: contain` plus a `background-position`. The
+   shorthand resets every sub-property it does not mention, so this one
+   rule silently restored `size: auto`, `position: 0% 0%` and
+   `repeat: repeat` — the photo reverted to its natural 1000×1000, was
+   pinned to the top-left of a 648×464 card and tiled. Measured in
+   jsdom, not guessed. Setting only the colour leaves the image sizing
+   of every card that has one completely untouched. */
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.product-card,
+    .deal-card,
+    .category-card,
+    .testimonial-card,
+    .benefit-card,
+    .top-rated-card,
+    .recent-card,
+    .hero-product-card,
+    .quick-view-card) {
+    background-color: var(--ss-surface);
+    border-color: var(--ss-line);
+}
+
+/* ---------------------------- chrome ------------------------------ */
+/* Navbar.css and Footer.css now read --ss-surface themselves, so their
+   backgrounds are not repeated here. The navbar in particular must keep
+   its own ::before glass layer for the frosted blur — restating a
+   solid colour at this specificity would flatten it. Only the parts
+   those files still hard-code are set below. */
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.navbar-main,
+    .footer-section) {
+    border-color: var(--ss-line);
+    color: var(--ss-ink);
+}
+
+/* The mobile drawer is a separate surface that slides over the page. */
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.mobile-nav-content,
+    .mobile-nav-content.dark) {
+    background: var(--ss-surface);
+    color: var(--ss-ink);
+}
+
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.nav-link-item.is-active,
+    .nav-link-item:hover,
+    .nav-brand,
+    .footer-brand h3) {
+    color: var(--ss-accent);
+}
+
+/* Search field, icon buttons and the account dropdown sit on the bar,
+   so they need the surface tone too or they float as darker patches. */
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.nav-search,
+    .nav-search input,
+    .mobile-search,
+    .icon-btn,
+    .dropdown-pill) {
+    background: var(--ss-canvas);
+    border-color: var(--ss-line);
+    color: var(--ss-ink);
+}
+
+html[data-ss-theme]:not([data-ss-theme='default']) body .cart-badge {
+    background: var(--ss-accent);
+    color: var(--ss-accent-text);
+}
+
+/* ----------------------------- accents ---------------------------- */
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.btn-primary-action,
+    .newsletter-form button,
+    .add-to-cart-btn,
+    .cart-checkout-btn) {
+    background: var(--ss-accent);
+    border-color: var(--ss-accent);
+    color: var(--ss-accent-text);
+}
+
+html[data-ss-theme]:not([data-ss-theme='default']) body :is(.eyebrow,
+    .section-eyebrow,
+    .product-category,
+    .view-all-link,
+    .price-current) {
+    color: var(--ss-accent);
+}
+
+html[data-ss-theme]:not([data-ss-theme='default']) body .btn-secondary-action {
+    border-color: var(--ss-accent);
+    color: var(--ss-accent);
+}
+
+/* Slider dots and any small accent chip. */
+html[data-ss-theme]:not([data-ss-theme='default']) body .dot.active {
+    background: var(--ss-accent);
+}
+
+/* ------------------------------ admin ----------------------------- */
+/* The panel keeps its own neutral palette regardless of the season. */
+html[data-ss-theme] .ad-shell,
+html[data-ss-theme] .ad-shell body,
+html[data-ss-theme] .ab-editor {
+    background: revert;
+    color: revert;
+}

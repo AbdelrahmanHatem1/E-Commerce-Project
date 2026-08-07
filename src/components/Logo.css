@@ -1,0 +1,116 @@
+/* ================================================================
+   ShopStream logo (.lg-*)
+
+   Everything paints in currentColor or a theme variable, so the mark
+   follows the active season and the light/dark switch without a
+   second asset.
+   ================================================================ */
+
+.lg-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--ss-accent, #5800ff);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.lg-mark {
+    display: block;
+    flex-shrink: 0;
+    /* Optical alignment: the bag's visual mass sits low, so nudging it
+     up by a hair centres it against the cap height of the word. */
+    transform: translateY(-1px);
+}
+
+/* ---------------------------- wordmark --------------------------- */
+.lg-word {
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+/* The weight shift is the whole idea: "Shop" is the solid noun,
+   "Stream" is the lighter motion half. */
+.lg-word-a {
+    font-weight: 800;
+}
+
+.lg-word-b {
+    font-weight: 500;
+    opacity: 0.92;
+}
+
+/* ------------------------- the mark itself ----------------------- */
+.lg-bag,
+.lg-handle {
+    transition: opacity 0.3s ease;
+}
+
+/* The stream lines carry the motion, so they get their own transform
+   origin and a stagger. */
+.lg-stream {
+    transform-origin: right center;
+    transition: transform 0.32s cubic-bezier(0.22, 0.68, 0.36, 1),
+        opacity 0.32s ease;
+}
+
+.lg-stream-1 {
+    opacity: 0.9;
+}
+
+.lg-stream-2 {
+    opacity: 0.65;
+}
+
+.lg-stream-3 {
+    opacity: 0.4;
+}
+
+/* ---------------------------- hover ------------------------------ */
+/* Lines pull back and fade as though the bag has just moved past.
+   Staggered delays make it read as one gesture rather than three. */
+.lg-logo:hover .lg-mark.is-animated .lg-stream-1 {
+    transform: translateX(-3px);
+    opacity: 1;
+}
+
+.lg-logo:hover .lg-mark.is-animated .lg-stream-2 {
+    transform: translateX(-5px);
+    opacity: 0.85;
+    transition-delay: 0.03s;
+}
+
+.lg-logo:hover .lg-mark.is-animated .lg-stream-3 {
+    transform: translateX(-7px);
+    opacity: 0.6;
+    transition-delay: 0.06s;
+}
+
+/* --------------------------- reduced motion ---------------------- */
+@media (prefers-reduced-motion: reduce) {
+
+    .lg-stream,
+    .lg-bag,
+    .lg-handle {
+        transition: none;
+    }
+
+    .lg-logo:hover .lg-mark.is-animated .lg-stream-1,
+    .lg-logo:hover .lg-mark.is-animated .lg-stream-2,
+    .lg-logo:hover .lg-mark.is-animated .lg-stream-3 {
+        transform: none;
+    }
+}
+
+/* ---------------------------- responsive ------------------------- */
+@media (max-width: 480px) {
+    .lg-word {
+        font-size: 1.3rem;
+    }
+
+    .lg-logo {
+        gap: 0.4rem;
+    }
+}

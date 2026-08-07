@@ -1,0 +1,26 @@
+/* Ambient seasonal particles. Fixed and non-interactive: it must never
+   intercept a click or add a scrollbar. */
+.ss-effect {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+/* Decorative only — remove it entirely for reduced-motion visitors
+   rather than leaving a frozen frame on screen. */
+@media (prefers-reduced-motion: reduce) {
+    .ss-effect {
+        display: none;
+    }
+}
+
+/* On very small screens the particles compete with the content more
+   than they add, and they cost the most battery there. */
+@media (max-width: 480px) {
+    .ss-effect {
+        opacity: .6;
+    }
+}

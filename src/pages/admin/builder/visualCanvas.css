@@ -1,0 +1,314 @@
+/* ============ Visual canvas (.vc-*) — the WYSIWYG surface ============ */
+
+.vc {
+    overflow-y: auto;
+    height: 100%;
+    padding: 1.1rem;
+    background: #eef1f8;
+    /* A subtle grid reads as "workspace" rather than "page", which stops
+     the canvas being mistaken for the finished site. */
+    background-image: radial-gradient(circle, rgba(20, 28, 51, 0.06) 1px, transparent 1px);
+    background-size: 18px 18px;
+}
+
+body.dark .vc {
+    background: #080d17;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+/* The device frame. Width alone drives the responsive preview, so the
+   blocks inside reflow exactly as they would on the real breakpoint. */
+.vc-frame {
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--ss-canvas, #ffffff);
+    box-shadow: 0 10px 40px rgba(20, 28, 51, 0.12);
+    transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.dark .vc-frame {
+    background: var(--ss-canvas, #0b1120);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.vc-frame.is-tablet,
+.vc-frame.is-mobile {
+    border: 8px solid #1c2438;
+    border-radius: 26px;
+}
+
+/* --------------------------- block chrome --------------------------- */
+.vc-block {
+    position: relative;
+    transition: opacity 0.18s ease;
+}
+
+.vc-block.is-dragging {
+    opacity: 0.35;
+}
+
+/* Outline is drawn with a pseudo-element so it overlays the block
+   without taking part in layout. */
+.vc-block::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    pointer-events: none;
+    transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.vc-block.is-hovered::after {
+    border-color: rgba(124, 92, 255, 0.55);
+}
+
+.vc-block.is-selected::after {
+    border-color: #4c1fd7;
+    background: rgba(76, 31, 215, 0.05);
+}
+
+/* Blocks are clickable to select. */
+.vc-block .ssb-section {
+    cursor: pointer;
+}
+
+/* ----------------------------- badge -------------------------------- */
+.vc-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.28rem 0.7rem;
+    border-radius: 0 0 8px 0;
+    background: #4c1fd7;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.16s ease, transform 0.16s ease;
+    pointer-events: none;
+}
+
+.vc-block.is-hovered .vc-badge,
+.vc-block.is-selected .vc-badge {
+    opacity: 1;
+    transform: none;
+}
+
+.vc-badge em {
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.24);
+    font-size: 0.6rem;
+    font-style: normal;
+    text-transform: uppercase;
+}
+
+/* ---------------------------- toolbar ------------------------------- */
+.vc-tools {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 6;
+    display: flex;
+    gap: 1px;
+    overflow: hidden;
+    border-radius: 9px;
+    background: #ffffff;
+    box-shadow: 0 4px 16px rgba(20, 28, 51, 0.22);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.16s ease, transform 0.16s ease;
+    pointer-events: none;
+}
+
+.vc-block.is-hovered .vc-tools,
+.vc-block.is-selected .vc-tools {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+
+body.dark .vc-tools {
+    background: #1a2338;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55);
+}
+
+.vc-tools button {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: #4a5568;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.vc-tools button:hover:not(:disabled) {
+    background: #f2f4fb;
+    color: #4c1fd7;
+}
+
+.vc-tools button.is-danger:hover {
+    background: #ffe4e6;
+    color: #e11d48;
+}
+
+.vc-tools button:disabled {
+    cursor: not-allowed;
+    opacity: 0.28;
+}
+
+body.dark .vc-tools button {
+    color: #b6c2da;
+}
+
+body.dark .vc-tools button:hover:not(:disabled) {
+    background: #24304d;
+    color: #c4b5fd;
+}
+
+body.dark .vc-tools button.is-danger:hover {
+    background: rgba(251, 113, 133, 0.18);
+    color: #fb7185;
+}
+
+.vc-grip {
+    cursor: grab !important;
+    background: #f2eeff !important;
+    color: #4c1fd7 !important;
+}
+
+.vc-grip:active {
+    cursor: grabbing !important;
+}
+
+body.dark .vc-grip {
+    background: rgba(124, 58, 237, 0.24) !important;
+    color: #c4b5fd !important;
+}
+
+/* --------------------------- drop zones ----------------------------- */
+.vc-drop {
+    position: relative;
+    height: 6px;
+    transition: height 0.16s ease;
+}
+
+.vc-drop.is-armed {
+    height: 42px;
+}
+
+.vc-drop-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: transparent;
+    transform: translateY(-50%);
+    transition: background 0.16s ease, height 0.16s ease;
+}
+
+.vc-drop.is-armed .vc-drop-line {
+    background: rgba(124, 92, 255, 0.35);
+}
+
+.vc-drop.is-over .vc-drop-line {
+    height: 4px;
+    background: #4c1fd7;
+}
+
+.vc-drop-pill {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.22rem 0.75rem;
+    border-radius: 999px;
+    background: #4c1fd7;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+    transition: opacity 0.16s ease, transform 0.16s ease;
+    pointer-events: none;
+}
+
+.vc-drop.is-over .vc-drop-pill {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* ----------------------------- empty -------------------------------- */
+.vc-empty {
+    display: grid;
+    padding: 5rem 1.5rem;
+    place-items: center;
+    gap: 0.45rem;
+    border: 2px dashed #cfd8ea;
+    border-radius: 16px;
+    margin: 1rem;
+    text-align: center;
+    transition: border-color 0.16s ease, background 0.16s ease;
+}
+
+.vc-empty.is-over {
+    border-color: #4c1fd7;
+    background: rgba(76, 31, 215, 0.05);
+}
+
+.vc-empty i {
+    color: #b9c3d8;
+    font-size: 2.4rem;
+}
+
+.vc-empty h2 {
+    margin: 0.3rem 0 0;
+    color: #141c33;
+    font-size: 1.1rem;
+    font-weight: 850;
+}
+
+.vc-empty p {
+    margin: 0;
+    color: #8b95ab;
+    font-size: 0.86rem;
+}
+
+body.dark .vc-empty {
+    border-color: #24304d;
+}
+
+body.dark .vc-empty h2 {
+    color: #f4f7ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .vc-frame,
+    .vc-block,
+    .vc-block::after,
+    .vc-badge,
+    .vc-tools,
+    .vc-drop,
+    .vc-drop-line,
+    .vc-drop-pill {
+        transition: none !important;
+    }
+}

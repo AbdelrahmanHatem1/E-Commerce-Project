@@ -1,0 +1,55 @@
+/* ================================================================
+   Route-level loading state shared by ProtectedRoute / GuestRoute.
+   Scoped under .route-loading so it cannot leak anywhere.
+   ================================================================ */
+.route-loading {
+    display: grid;
+    min-height: calc(100vh - 80px);
+    place-content: center;
+    justify-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    background: #f7f8ff;
+}
+
+body.dark .route-loading {
+    background: #0d1424;
+}
+
+.route-loading p {
+    margin: 0;
+    color: #667085;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+body.dark .route-loading p {
+    color: #97a5c4;
+}
+
+.route-loading-spinner {
+    width: 34px;
+    height: 34px;
+    border: 3px solid #dfe4f1;
+    border-radius: 50%;
+    border-top-color: #3e30d9;
+    animation: route-loading-spin 0.7s linear infinite;
+}
+
+body.dark .route-loading-spinner {
+    border-color: #2b3550;
+    border-top-color: #6c5cff;
+}
+
+@keyframes route-loading-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Respect the visitor's motion preference. */
+@media (prefers-reduced-motion: reduce) {
+    .route-loading-spinner {
+        animation-duration: 2s;
+    }
+}

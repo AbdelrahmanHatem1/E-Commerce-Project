@@ -1,0 +1,107 @@
+/* ----------------------------------------------------------------
+   Theme bridge.
+
+   `applyTheme` writes --ss-* custom properties onto <html>, but the
+   storefront stylesheets were written long before those existed and
+   still carry literal hex values. Rewriting two thousand declarations
+   across fifteen files would be a large, risky change.
+
+   Instead this sheet re-points the handful of surfaces that actually
+   carry the brand — page background, cards, accents, borders — at the
+   variables. It only takes effect while a non-default theme is active
+   (`html[data-ss-theme]` is set by applyTheme and removed on cleanup),
+   so the original design is untouched unless the admin asks for a
+   season.
+
+   Scoped to `:where()` where possible to keep specificity at zero, so
+   any component that genuinely needs its own colour still wins.
+   ---------------------------------------------------------------- */
+
+/* Nothing below applies until a theme other than the default is on. */
+html[data-ss-theme]:not([data-ss-theme='default']) body {
+    background: var(--ss-canvas);
+    color: var(--ss-ink);
+}
+
+/* ----------------------------- surfaces --------------------------- */
+html[data-ss-theme]:not([data-ss-theme='default']) :is(.homepage-main,
+    .products-page,
+    .pd-page,
+    .cp-page,
+    .cart-page,
+    .categories-page) {
+    background: var(--ss-canvas);
+}
+
+/* Cards, panels and anything that reads as "raised". */
+html[data-ss-theme]:not([data-ss-theme='default']) :is(.product-card,
+    .deal-card,
+    .category-card,
+    .testimonial-card,
+    .benefit-card,
+    .top-rated-card,
+    .recent-card) {
+    background: var(--ss-surface);
+    border-color: var(--ss-line);
+}
+
+/* ------------------------------ accents --------------------------- */
+html[data-ss-theme]:not([data-ss-theme='default']) :is(.btn-primary-action,
+    .newsletter-form button,
+    .add-to-cart-btn,
+    .view-all-link) {
+    background: var(--ss-accent);
+    color: var(--ss-accent-text);
+    border-color: var(--ss-accent);
+}
+
+html[data-ss-theme]:not([data-ss-theme='default']) :is(.btn-secondary-action,
+    .section-eyebrow,
+    .eyebrow,
+    .product-category,
+    .price-current) {
+    color: var(--ss-accent);
+}
+
+html[data-ss-theme]:not([data-ss-theme='default']) :is(.btn-secondary-action) {
+    border-color: var(--ss-accent);
+}
+
+/* The navbar and footer frame every page, so they matter most. */
+html[data-ss-theme]:not([data-ss-theme='default']) :is(.navbar-main,
+    .footer-main) {
+    background: var(--ss-surface);
+    border-color: var(--ss-line);
+}
+
+html[data-ss-theme]:not([data-ss-theme='default']) .nav-link-item.is-active {
+    color: var(--ss-accent);
+}
+
+/* --------------------------- hero + section ----------------------- */
+html[data-ss-theme]:not([data-ss-theme='default']) :is(.hero-section,
+    .featured-products-section,
+    .top-categories-section,
+    .deals-section,
+    .top-rated-section,
+    .recent-section,
+    .testimonials-section,
+    .benefits-section,
+    .newsletter-section) {
+    background: var(--ss-canvas);
+}
+
+/* Alternating bands keep their contrast by using the surface tone. */
+html[data-ss-theme]:not([data-ss-theme='default']) :is(.top-categories-section,
+    .testimonials-section) {
+    background: var(--ss-surface);
+}
+
+/* ------------------------------ admin ----------------------------- */
+/* The admin panel deliberately keeps its own neutral palette: an
+   operator switching to a summer theme should not have their tools
+   turn orange. Only the storefront is themed. */
+html[data-ss-theme] .ad-shell,
+html[data-ss-theme] .ad-shell * {
+    --ss-accent: initial;
+}
