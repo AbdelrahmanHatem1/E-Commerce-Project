@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext.jsx';
 import { useWallet } from '../contexts/WalletContext.jsx';
+import { useAdmin } from '../contexts/AdminContext.jsx';
 import { AuthContext } from '../contexts/AuthContext.jsx';
 import { useNotification } from '../components/Notification.jsx';
 import './CheckoutPage.css';
@@ -318,6 +319,7 @@ const CheckoutPage = () => {
   const { user } = useContext(AuthContext);
   const { balance: walletBalance, spendFunds, refreshOrders } = useWallet();
   const { notify } = useNotification();
+  const { isAdmin } = useAdmin();
   const navigate = useNavigate();
 
   const shippingRef = useRef(null);
@@ -577,13 +579,22 @@ const CheckoutPage = () => {
   const outOfStockItems = cartItems.filter((item) => productMeta[item.id]?.stock === 0);
 
   /* ------------------------------ handlers ------------------------------ */
-  /* Development helper. Vite strips this branch from a production build,
-     so the button never ships to real shoppers. */
+  /* Fills the form with a known-good address and a test card.
+
+     Offered in dev builds, and to a signed-in admin on the live site —
+     demoing the order flow otherwise means retyping nine fields every
+     time. A normal shopper never sees it: `isAdmin` is false for them,
+     and the card number is Stripe's public test value, so there is
+     nothing here worth hiding beyond the clutter. */
   const fillTestData = () => {
+    /* Only ever fills the gaps. The page already pulls the real profile
+       from /auth/me, so anything that arrived from there — or that was
+       typed by hand — is left exactly as it is. The literals below are
+       a last resort for fields the account simply does not carry. */
     setShipping((prev) => ({
-      firstName: prev.firstName || 'Emily',
-      lastName: prev.lastName || 'Johnson',
-      email: prev.email || 'emily.johnson@x.dummyjson.com',
+      firstName: prev.firstName || user?.firstName || 'Emily',
+      lastName: prev.lastName || user?.lastName || 'Johnson',
+      email: prev.email || user?.email || 'emily.johnson@x.dummyjson.com',
       address: prev.address || '626 Main Street',
       city: prev.city || 'Phoenix',
       state: prev.state || 'Mississippi',
@@ -592,12 +603,18 @@ const CheckoutPage = () => {
       phone: prev.phone || '+20 100 000 0000',
     }));
 
-    setCard({
-      name: 'Emily Johnson',
+    setCard((prev) => ({
+      /* The cardholder follows the account; the rest is Stripe's public
+         test card, which is safe to ship and is rejected by every real
+         processor. */
+      name:
+        prev.name ||
+        [user?.firstName, user?.lastName].filter(Boolean).join(' ') ||
+        'Emily Johnson',
       number: '4242 4242 4242 4242',
       expiry: '12/29',
       cvc: '123',
-    });
+    }));
 
     setSameAsShipping(true);
     notify.info('Test data filled — you can place the order now.');
@@ -891,11 +908,11 @@ const CheckoutPage = () => {
 
         <CheckoutStepper currentStep={currentStep} onStepClick={scrollToStep} />
 
-        {import.meta.env.DEV && (
+        {(import.meta.env.DEV || isAdmin) && (
           <button type="button" className="checkout-devfill" onClick={fillTestData}>
             <i className="bi bi-magic" aria-hidden="true" />
             Fill test data
-            <span>dev only</span>
+            <span>{import.meta.env.DEV ? 'dev only' : 'admin only'}</span>
           </button>
         )}
 
