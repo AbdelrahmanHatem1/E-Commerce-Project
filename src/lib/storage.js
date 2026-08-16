@@ -27,6 +27,10 @@ export const KEYS = {
     adminCreated: 'shopstream_admin_created',
     adminDemo: 'shopstream_admin_demo',
     adminUsers: 'shopstream_admin_users',
+    /* Accounts created through Register. DummyJSON's /users/add returns a
+       new id but persists nothing, so the account has to live here or the
+       visitor can never sign in with what they just created. */
+    localAccounts: 'shopstream_accounts',
     adminCarts: 'shopstream_admin_carts',
 };
 
@@ -44,6 +48,7 @@ export const KEY_LABELS = {
     [KEYS.adminCreated]: 'Products you created',
     [KEYS.adminDeleted]: 'Archived products',
     [KEYS.adminUsers]: 'Customer edits',
+    [KEYS.localAccounts]: 'Accounts created here',
     [KEYS.adminCarts]: 'Order decisions',
 };
 

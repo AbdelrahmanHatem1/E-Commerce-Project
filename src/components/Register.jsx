@@ -197,7 +197,9 @@ const Register = () => {
         notify.success(
           `Welcome, ${result.user.firstName || formData.username}! Your account is ready.`
         );
-        navigate('/login', { replace: true, state: { username: formData.username } });
+        /* Registering signs you in, so sending you to the login page to
+           retype the credentials you just chose would be busywork. */
+        navigate('/', { replace: true });
       } else {
         notify.error('Registration Failed', result.message);
       }
